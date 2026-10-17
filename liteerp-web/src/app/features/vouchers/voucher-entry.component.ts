@@ -36,7 +36,7 @@ interface Line {
     InputNumberModule, TagModule, TooltipModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start">
+      <ng-template #start>
         <p-button  icon="pi pi-arrow-left" severity="secondary" class="mr-2"
           routerLink="/vouchers" pTooltip="Back to list"></p-button>
         <span class="font-bold text-lg">
@@ -46,7 +46,7 @@ interface Line {
           <p-tag [value]="h.status" [severity]="h.status === 'Posted' ? 'success' : 'warn'" styleClass="ml-2" />
         }
       </ng-template>
-      <ng-template pTemplate="end">
+      <ng-template #end>
         @if (readOnly()) {
           @if (h.canReverse) {
             <p-button  label="Reverse" icon="pi pi-replay" severity="help" (click)="reverse()"></p-button>
@@ -107,7 +107,7 @@ interface Line {
 
     <p-card styleClass="mt-3" header="Lines">
       <p-table [value]="lines" styleClass="p-datatable-sm">
-        <ng-template pTemplate="header">
+        <ng-template #header>
           <tr>
             <th style="width:2.5rem">#</th>
             <th>Account head</th>
@@ -118,7 +118,7 @@ interface Line {
             @if (!readOnly()) { <th style="width:3.5rem"></th> }
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-l let-i="rowIndex">
+        <ng-template #body let-l let-i="rowIndex">
           <tr>
             <td>{{ i + 1 }}</td>
             <td>
@@ -148,7 +148,7 @@ interface Line {
             }
           </tr>
         </ng-template>
-        <ng-template pTemplate="footer">
+        <ng-template #footer>
           <tr>
             <td colspan="3" class="text-right font-bold">Total</td>
             <td class="text-right font-bold">{{ totalDr() | number:'1.2-2' }}</td>
@@ -179,11 +179,11 @@ interface Line {
         </div>
         @if (openInvoices().length > 0) {
           <p-table [value]="openInvoices()" styleClass="p-datatable-sm">
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr><th>Invoice</th><th>Date</th><th class="text-right">Balance</th>
                 <th class="text-right" style="width:12rem">Allocate</th></tr>
             </ng-template>
-            <ng-template pTemplate="body" let-inv>
+            <ng-template #body let-inv>
               <tr>
                 <td class="font-bold">{{ inv.invoiceNo }}</td>
                 <td>{{ inv.invoiceDate }}</td>
@@ -201,10 +201,10 @@ interface Line {
         }
         @if (readOnly() && savedAllocs.length > 0) {
           <p-table [value]="savedAllocs" styleClass="p-datatable-sm mt-2">
-            <ng-template pTemplate="header">
+            <ng-template #header>
               <tr><th>Invoice</th><th class="text-right">Allocated</th></tr>
             </ng-template>
-            <ng-template pTemplate="body" let-a>
+            <ng-template #body let-a>
               <tr><td>{{ a.invoiceNo }}</td><td class="text-right">{{ a.amount | number:'1.2-2' }}</td></tr>
             </ng-template>
           </p-table>
