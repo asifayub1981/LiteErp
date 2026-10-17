@@ -22,45 +22,50 @@ interface Item { id: number; name: string; }
     ButtonModule, TableModule, ToolbarModule, CardModule, TagModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start"><span class="font-bold text-lg">Party Statement</span></ng-template>
+      <ng-template #start><span class="font-bold text-lg">Party Statement</span></ng-template>
     </p-toolbar>
 
-    <p-card styleClass="mt-3">
-      <div class="flex flex-wrap gap-3 align-items-end mb-3">
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Company</label>
+    <div class="report-filters">
+      <div class="report-filters-title">Report Parameters</div>
+      <div class="report-filters-grid">
+        <div class="report-field">
+          <label>Company</label>
           <p-select [options]="companies" [(ngModel)]="f.companyId" optionLabel="name" optionValue="id"
             placeholder="Company" styleClass="w-14rem" (onChange)="onCompany()" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Party</label>
+        <div class="report-field">
+          <label>Party</label>
           <p-select [options]="parties" [(ngModel)]="f.partyId" optionLabel="name" optionValue="id"
             placeholder="Select party" [filter]="true" filterBy="name" styleClass="w-16rem" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">From</label>
+        <div class="report-field">
+          <label>From</label>
           <p-datepicker [(ngModel)]="f.from" dateFormat="yy-mm-dd" [showIcon]="true" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">To</label>
+        <div class="report-field">
+          <label>To</label>
           <p-datepicker [(ngModel)]="f.to" dateFormat="yy-mm-dd" [showIcon]="true" />
         </div>
-        <p-button label="Run" icon="pi pi-play" (click)="load()"
-          [loading]="busy()" [disabled]="!f.partyId"></p-button>
+        <div class="report-preview-btn">
+          <p-button  label="Preview" icon="pi pi-eye" size="large"
+            (click)="load()" [loading]="busy()" [disabled]="!f.partyId"></p-button>
+        </div>
       </div>
+    </div>
 
-      @if (stmt()) {
+    @if (stmt()) {
+      <p-card>
         <div class="mb-2">
           <span class="font-bold text-lg">{{ stmt()!.partyName }}</span>
           <span class="text-500 ml-2">{{ stmt()!.partyCode }}</span>
         </div>
         <p-table [value]="rows()" styleClass="p-datatable-sm">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr><th>Date</th><th>Doc No</th><th>Description</th>
               <th class="text-right">Debit</th><th class="text-right">Credit</th>
               <th class="text-right">Balance</th></tr>
           </ng-template>
-          <ng-template pTemplate="body" let-r>
+          <ng-template #body let-r>
             <tr>
               <td>{{ r.date }}</td><td class="font-bold">{{ r.docNo }}</td><td>{{ r.description }}</td>
               <td class="text-right">{{ r.debit | number:'1.2-2' }}</td>
@@ -68,7 +73,7 @@ interface Item { id: number; name: string; }
               <td class="text-right font-bold">{{ r.balance | number:'1.2-2' }}</td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="footer">
+          <ng-template #footer>
             <tr>
               <td colspan="3" class="text-right font-bold">Opening</td>
               <td colspan="2"></td>
@@ -81,12 +86,12 @@ interface Item { id: number; name: string; }
               <td class="text-right font-bold">{{ stmt()!.closingBalance | number:'1.2-2' }}</td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="emptymessage">
+          <ng-template #emptymessage>
             <tr><td colspan="6" class="text-center text-500">No transactions in this period.</td></tr>
           </ng-template>
         </p-table>
-      }
-    </p-card>
+      </p-card>
+    }
   `,
 })
 export class PartyStatementComponent implements OnInit {
