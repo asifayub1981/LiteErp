@@ -58,7 +58,7 @@ interface TbRow {
           <div class="col-12">
             <p-card header="Recent Vouchers">
               <p-table [value]="recent()" [rows]="8" styleClass="p-datatable-sm">
-                <ng-template pTemplate="header">
+                <ng-template #header>
                   <tr>
                     <th>Voucher No</th><th>Date</th><th>Type</th>
                     <th style="text-align:right">Debit</th>
@@ -66,7 +66,7 @@ interface TbRow {
                     <th>Status</th><th></th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-v>
+                <ng-template #body let-v>
                   <tr>
                     <td>{{ v.voucherNo }}</td>
                     <td>{{ v.voucherDate }}</td>
@@ -78,7 +78,7 @@ interface TbRow {
                       [routerLink]="['/vouchers', v.id]"></p-button></td>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="emptymessage">
+                <ng-template #emptymessage>
                   <tr><td colspan="7" class="text-center">No vouchers yet.</td></tr>
                 </ng-template>
               </p-table>
