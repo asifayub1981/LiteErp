@@ -34,7 +34,7 @@ import { AuthService } from '../../core/auth.service';
             @if (error()) {
               <p-message severity="error" styleClass="w-full">{{ error() }}</p-message>
             }
-            <p-button  label="Sign in" class="w-full" [loading]="busy()"
+            <p-button  label="Sign in" class="w-full login-btn" [loading]="busy()"
               (click)="doLogin()"></p-button>
             <small class="login-demo">Demo: admin&#64;liteerp.local / Admin123!</small>
           </div>
@@ -72,6 +72,16 @@ import { AuthService } from '../../core/auth.service';
     .login-fields label { font-size: .85rem; font-weight: 600; color: #334155; margin-top: .5rem; }
     .req { color: #ef4444; }
     .login-demo { color: var(--lite-text-soft); text-align: center; margin-top: .4rem; }
+    .login-btn ::ng-deep .p-button {
+      width: 100%; padding: .85rem; font-size: 1rem; font-weight: 600;
+      border-radius: 12px; margin-top: .5rem;
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+      border: none; box-shadow: 0 4px 12px rgba(79,70,229,.3);
+    }
+    .login-btn ::ng-deep .p-button:hover {
+      box-shadow: 0 6px 16px rgba(79,70,229,.4);
+      transform: translateY(-1px);
+    }
     .login-brand-pane {
       flex: 1; background: linear-gradient(160deg, var(--lite-navy) 0%, var(--lite-navy-2) 100%);
       color: #fff; display: flex; flex-direction: column; padding: 2rem;
