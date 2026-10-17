@@ -28,6 +28,18 @@ public class ErpDbContext : IdentityDbContext<ApplicationUser>
     // Vouchers
     public DbSet<Voucher> Vouchers => Set<Voucher>();
     public DbSet<VoucherLine> VoucherLines => Set<VoucherLine>();
+    public DbSet<VoucherSequence> VoucherSequences => Set<VoucherSequence>();
+    public DbSet<VoucherAllocation> VoucherAllocations => Set<VoucherAllocation>();
+
+    // APAR
+    public DbSet<Party> Parties => Set<Party>();
+    public DbSet<SalesInvoice> SalesInvoices => Set<SalesInvoice>();
+    public DbSet<SalesInvoiceLine> SalesInvoiceLines => Set<SalesInvoiceLine>();
+    public DbSet<PurchaseInvoice> PurchaseInvoices => Set<PurchaseInvoice>();
+    public DbSet<PurchaseInvoiceLine> PurchaseInvoiceLines => Set<PurchaseInvoiceLine>();
+    public DbSet<DocumentSequence> DocumentSequences => Set<DocumentSequence>();
+
+    public DbSet<UserFormRight> UserFormRights => Set<UserFormRight>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -117,6 +129,114 @@ public class ErpDbContext : IdentityDbContext<ApplicationUser>
             e.Property(x => x.Name).HasMaxLength(100).IsRequired();
             e.Property(x => x.TaxType).HasMaxLength(20).IsRequired();
             e.Property(x => x.Rate).HasPrecision(8, 4);
+            e.HasOne(x => x.TaxAccountHead).WithMany().HasForeignKey(x => x.TaxAccountHeadId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ---------- APAR ----------
+        b.Entity<Party>(e =>
+        {
+            e.Property(x => x.Code).HasMaxLength(20).IsRequired();
+            e.Property(x => x.Name).HasMaxLength(150).IsRequired();
+            e.Property(x => x.Phone).HasMaxLength(30);
+            e.Property(x => x.Address).HasMaxLength(250);
+            e.Property(x => x.TaxNo).HasMaxLength(30);
+            e.Property(x => x.CreditLimit).HasPrecision(18, 2);
+            e.HasIndex(x => new { x.CompanyId, x.Code }).IsUnique();
+            e.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.AccountHead).WithMany().HasForeignKey(x => x.AccountHeadId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<DocumentSequence>(e =>
+        {
+            e.HasIndex(x => new { x.CompanyId, x.DocumentType, x.FiscalYearId }).IsUnique();
+            e.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.FiscalYear).WithMany().HasForeignKey(x => x.FiscalYearId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<SalesInvoice>(e =>
+        {
+            e.Property(x => x.InvoiceNo).HasMaxLength(40).IsRequired();
+            e.Property(x => x.Narration).HasMaxLength(500);
+            e.Property(x => x.CurrencyCode).HasMaxLength(3).IsRequired();
+            e.Property(x => x.ExchangeRate).HasPrecision(18, 6);
+            e.Property(x => x.CreatedBy).HasMaxLength(100);
+            e.HasIndex(x => new { x.CompanyId, x.InvoiceNo }).IsUnique();
+            e.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.Party).WithMany().HasForeignKey(x => x.PartyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.FiscalYear).WithMany().HasForeignKey(x => x.FiscalYearId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.PostedVoucher).WithMany().HasForeignKey(x => x.PostedVoucherId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<PurchaseInvoice>(e =>
+        {
+            e.Property(x => x.InvoiceNo).HasMaxLength(40).IsRequired();
+            e.Property(x => x.Narration).HasMaxLength(500);
+            e.Property(x => x.CurrencyCode).HasMaxLength(3).IsRequired();
+            e.Property(x => x.ExchangeRate).HasPrecision(18, 6);
+            e.Property(x => x.CreatedBy).HasMaxLength(100);
+            e.HasIndex(x => new { x.CompanyId, x.InvoiceNo }).IsUnique();
+            e.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.Party).WithMany().HasForeignKey(x => x.PartyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.FiscalYear).WithMany().HasForeignKey(x => x.FiscalYearId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.PostedVoucher).WithMany().HasForeignKey(x => x.PostedVoucherId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<SalesInvoiceLine>(e =>
+        {
+            e.Property(x => x.Description).HasMaxLength(250);
+            e.Property(x => x.Qty).HasPrecision(18, 4);
+            e.Property(x => x.Rate).HasPrecision(18, 4);
+            e.Property(x => x.Amount).HasPrecision(18, 4);
+            e.Property(x => x.TaxAmount).HasPrecision(18, 4);
+            e.HasOne(x => x.SalesInvoice).WithMany(v => v.Lines)
+                .HasForeignKey(x => x.SalesInvoiceId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.AccountHead).WithMany().HasForeignKey(x => x.AccountHeadId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.TaxRule).WithMany().HasForeignKey(x => x.TaxRuleId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<PurchaseInvoiceLine>(e =>
+        {
+            e.Property(x => x.Description).HasMaxLength(250);
+            e.Property(x => x.Qty).HasPrecision(18, 4);
+            e.Property(x => x.Rate).HasPrecision(18, 4);
+            e.Property(x => x.Amount).HasPrecision(18, 4);
+            e.Property(x => x.TaxAmount).HasPrecision(18, 4);
+            e.HasOne(x => x.PurchaseInvoice).WithMany(v => v.Lines)
+                .HasForeignKey(x => x.PurchaseInvoiceId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne(x => x.AccountHead).WithMany().HasForeignKey(x => x.AccountHeadId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.TaxRule).WithMany().HasForeignKey(x => x.TaxRuleId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<VoucherAllocation>(e =>
+        {
+            e.Property(x => x.Amount).HasPrecision(18, 4);
+            e.HasOne(x => x.Voucher).WithMany().HasForeignKey(x => x.VoucherId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.SalesInvoice).WithMany().HasForeignKey(x => x.SalesInvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.PurchaseInvoice).WithMany().HasForeignKey(x => x.PurchaseInvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // ---------- Vouchers ----------
@@ -136,6 +256,19 @@ public class ErpDbContext : IdentityDbContext<ApplicationUser>
             e.HasOne(x => x.FiscalYear).WithMany().HasForeignKey(x => x.FiscalYearId)
                 .OnDelete(DeleteBehavior.Restrict);
             e.HasOne(x => x.Currency).WithMany().HasForeignKey(x => x.CurrencyCode)
+                .OnDelete(DeleteBehavior.Restrict);
+            // Reversal link — no cascade (nothing is ever deleted, but keep it safe anyway)
+            e.HasOne(x => x.ReversalOfVoucher).WithMany().HasForeignKey(x => x.ReversalOfVoucherId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ---------- Voucher sequences (atomic document numbering) ----------
+        b.Entity<VoucherSequence>(e =>
+        {
+            e.HasIndex(x => new { x.CompanyId, x.VoucherType, x.FiscalYearId }).IsUnique();
+            e.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(x => x.FiscalYear).WithMany().HasForeignKey(x => x.FiscalYearId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -157,6 +290,15 @@ public class ErpDbContext : IdentityDbContext<ApplicationUser>
         b.Entity<ApplicationUser>(e =>
         {
             e.Property(x => x.DisplayName).HasMaxLength(100);
+        });
+
+        b.Entity<UserFormRight>(e =>
+        {
+            e.Property(x => x.UserId).HasMaxLength(450).IsRequired();
+            e.Property(x => x.FormCode).HasMaxLength(30).IsRequired();
+            e.HasIndex(x => new { x.UserId, x.FormCode }).IsUnique();
+            e.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
