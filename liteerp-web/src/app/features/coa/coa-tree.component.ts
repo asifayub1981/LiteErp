@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SelectModule } from 'primeng/select';
 import { ToolbarModule } from 'primeng/toolbar';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -30,34 +31,34 @@ const ACCOUNT_TYPES = [
   selector: 'app-coa-tree',
   standalone: true,
   imports: [FormsModule, TreeModule, ButtonModule, DialogModule, InputTextModule,
-    CheckboxModule, SelectModule, ToolbarModule, TagModule, ToastModule],
+    CheckboxModule, SelectModule, ToolbarModule, TagModule, ToastModule, FloatLabelModule],
   providers: [MessageService],
   template: `
     <p-toast />
     <p-toolbar>
-      <ng-template pTemplate="start">
+      <ng-template #start>
         <span class="font-bold text-lg">COA Definition</span>
       </ng-template>
-      <ng-template pTemplate="center">
+      <ng-template #center>
         <p-select [options]="companies" [(ngModel)]="companyId" optionLabel="name"
           optionValue="id" placeholder="Select company" (onChange)="load()"
           styleClass="w-15rem" />
       </ng-template>
-      <ng-template pTemplate="end">
+      <ng-template #end>
         <div class="flex gap-2">
-          <button pButton icon="pi pi-plus" label="Root Head" severity="secondary" size="small"
-            (click)="openDialog(null, 'root')" [disabled]="!companyId"></button>
-          <button pButton icon="pi pi-angle-double-down" label="Expand all" severity="secondary"
-            size="small" (click)="expandAll()"></button>
-          <button pButton icon="pi pi-angle-double-up" label="Collapse all" severity="secondary"
-            size="small" (click)="collapseAll()"></button>
+          <p-button  icon="pi pi-plus" label="Root Head" severity="secondary" size="small"
+            (click)="openDialog(null, 'root')" [disabled]="!companyId"></p-button>
+          <p-button  icon="pi pi-angle-double-down" label="Expand all" severity="secondary"
+            size="small" (click)="expandAll()"></p-button>
+          <p-button  icon="pi pi-angle-double-up" label="Collapse all" severity="secondary"
+            size="small" (click)="collapseAll()"></p-button>
         </div>
       </ng-template>
     </p-toolbar>
 
     <p-tree [value]="nodes()" selectionMode="single" [(selection)]="selected"
       styleClass="mt-3" emptyMessage="Select a company to load the chart of accounts.">
-      <ng-template let-node pTemplate="default">
+      <ng-template let-node #default>
         <div class="flex align-items-center gap-2">
           <span class="font-mono text-500 text-sm">{{ node.data.code }}</span>
           <span [class.text-400]="!node.data.isActive">{{ node.label }}</span>
@@ -70,12 +71,12 @@ const ACCOUNT_TYPES = [
           @if (!node.data.isActive) { <p-tag value="Inactive" severity="danger" /> }
           @if (!node.data.activeForCompany) { <p-tag value="Not for company" severity="secondary" /> }
           <span class="flex gap-1 ml-2">
-            <button pButton icon="pi pi-plus" size="small" severity="secondary" pTooltip="Add child"
-              (click)="openDialog(node, 'child'); $event.stopPropagation()"></button>
-            <button pButton icon="pi pi-pencil" size="small" severity="secondary" pTooltip="Edit"
-              (click)="openDialog(node, 'edit'); $event.stopPropagation()"></button>
-            <button pButton icon="pi pi-trash" size="small" severity="danger" pTooltip="Delete"
-              (click)="remove(node); $event.stopPropagation()"></button>
+            <p-button  icon="pi pi-plus" size="small" severity="secondary" pTooltip="Add child"
+              (click)="openDialog(node, 'child'); $event.stopPropagation()"></p-button>
+            <p-button  icon="pi pi-pencil" size="small" severity="secondary" pTooltip="Edit"
+              (click)="openDialog(node, 'edit'); $event.stopPropagation()"></p-button>
+            <p-button  icon="pi pi-trash" size="small" severity="danger" pTooltip="Delete"
+              (click)="remove(node); $event.stopPropagation()"></p-button>
           </span>
         </div>
       </ng-template>
@@ -83,14 +84,14 @@ const ACCOUNT_TYPES = [
 
     <p-dialog [header]="dialogTitle" [(visible)]="dialogVisible" [modal]="true" [style]="{ width: '28rem' }">
       <div class="flex flex-column gap-3">
-        <span class="p-float-label">
+        <p-floatlabel>
           <input pInputText id="code" [(ngModel)]="form.code" class="w-full" />
           <label for="code">Code</label>
-        </span>
-        <span class="p-float-label">
+        </p-floatlabel>
+        <p-floatlabel>
           <input pInputText id="name" [(ngModel)]="form.name" class="w-full" />
           <label for="name">Name</label>
-        </span>
+        </p-floatlabel>
         <p-select [options]="accountTypes" [(ngModel)]="form.accountType" optionLabel="label"
           optionValue="value" placeholder="Account type" styleClass="w-full" />
         <div class="flex gap-4">
@@ -98,9 +99,9 @@ const ACCOUNT_TYPES = [
           <p-checkbox [(ngModel)]="form.isActive" [binary]="true" label="Active" inputId="act" />
         </div>
       </div>
-      <ng-template pTemplate="footer">
-        <button pButton label="Cancel" severity="secondary" (click)="dialogVisible = false"></button>
-        <button pButton label="Save" (click)="save()" [loading]="saving()"></button>
+      <ng-template #footer>
+        <p-button  label="Cancel" severity="secondary" (click)="dialogVisible = false"></p-button>
+        <p-button  label="Save" (click)="save()" [loading]="saving()"></p-button>
       </ng-template>
     </p-dialog>
   `
