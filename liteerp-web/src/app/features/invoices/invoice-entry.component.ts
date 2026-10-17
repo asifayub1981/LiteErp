@@ -30,7 +30,7 @@ interface Line {
     InputNumberModule, TagModule, TooltipModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start">
+      <ng-template #start>
         <p-button icon="pi pi-arrow-left" severity="secondary" class="mr-2"
           routerLink="/invoices/{{ kind }}" pTooltip="Back to list"></p-button>
         <span class="font-bold text-lg">
@@ -39,7 +39,7 @@ interface Line {
           @if (h.invoiceNo) { <span class="text-500">· {{ h.invoiceNo }}</span> }
         </span>
       </ng-template>
-      <ng-template pTemplate="end">
+      <ng-template #end>
         @if (readOnly()) {
           <p-tag value="Posted" severity="success" styleClass="mr-2"></p-tag>
           @if (h.postedVoucherNo) {
@@ -97,13 +97,13 @@ interface Line {
 
     <p-card styleClass="mt-3" header="Lines">
       <p-table [value]="lines()" styleClass="p-datatable-sm">
-        <ng-template pTemplate="header">
+        <ng-template #header>
           <tr><th style="width:22%">{{ kind === 'sales' ? 'Revenue' : 'Expense' }} Head *</th>
             <th style="width:22%">Description</th><th>Qty</th><th>Rate</th>
             <th>Tax</th><th class="text-right">Amount</th><th class="text-right">Tax Amt</th>
             @if (!readOnly()) { <th style="width:3rem"></th> } </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-l let-i="rowIndex">
+        <ng-template #body let-l let-i="rowIndex">
           <tr>
             <td><p-select [options]="heads" [(ngModel)]="l.accountHeadId" optionLabel="name"
               optionValue="id" placeholder="Head" [filter]="true" filterBy="name"
