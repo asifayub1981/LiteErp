@@ -79,3 +79,42 @@ html, body {
 .stat-purple .stat-label, .stat-purple .stat-value { color: var(--lite-purple); }
 .stat-blue { background: var(--lite-blue-bg); border-color: #bfdbfe; }
 .stat-blue .stat-label, .stat-blue .stat-value { color: var(--lite-blue); }
+
+/* Report filter card */
+.report-filters {
+  background: #fff;
+  border: 1px solid var(--lite-border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(30,27,75,.05);
+}
+.report-filters-title {
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--lite-navy);
+  margin-bottom: 1rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid var(--lite-border);
+}
+.report-filters-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  align-items: flex-end;
+}
+.report-field {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.report-field > label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: #475569;
+}
+.report-preview-btn {
+  margin-left: auto;
+}
