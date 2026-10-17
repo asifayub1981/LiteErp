@@ -34,7 +34,31 @@ export const routes: Routes = [
       },
       {
         path: 'parties',
-        loadComponent: () => import('./features/parties/party-list.component').then(m => m.PartyListComponent)
+        loadComponent: () => import('./features/parties/party-list.component').then(m => m.PartyListComponent),
+      },
+      {
+        path: 'parties/new',
+        loadComponent: () => import('./features/parties/party-entry.component').then(m => m.PartyEntryComponent),
+      },
+      {
+        path: 'parties/:id',
+        loadComponent: () => import('./features/parties/party-entry.component').then(m => m.PartyEntryComponent),
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./features/users/user-list.component').then(m => m.UserListComponent),
+      },
+      {
+        path: 'users/new',
+        loadComponent: () => import('./features/users/user-entry.component').then(m => m.UserEntryComponent),
+      },
+      {
+        path: 'users/:id',
+        loadComponent: () => import('./features/users/user-entry.component').then(m => m.UserEntryComponent),
+      },
+      {
+        path: 'users/:id/rights',
+        loadComponent: () => import('./features/users/user-rights.component').then(m => m.UserRightsComponent)
       },
       {
         path: 'invoices/sales',
