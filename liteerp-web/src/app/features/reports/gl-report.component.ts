@@ -21,26 +21,27 @@ interface Item { id: number; name: string; }
   imports: [FormsModule, DecimalPipe, SelectModule, DatePickerModule, CheckboxModule, ButtonModule, TableModule, ToolbarModule, CardModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start"><span class="font-bold text-lg">General Ledger</span></ng-template>
+      <ng-template #start><span class="font-bold text-lg">General Ledger</span></ng-template>
     </p-toolbar>
 
-    <p-card styleClass="mt-3">
-      <div class="flex flex-wrap gap-3 align-items-end">
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Company</label>
+    <div class="report-filters">
+      <div class="report-filters-title">Report Parameters</div>
+      <div class="report-filters-grid">
+        <div class="report-field">
+          <label>Company</label>
           <p-select [options]="companies" [(ngModel)]="f.companyId" optionLabel="name" optionValue="id"
             placeholder="Company" styleClass="w-14rem" (onChange)="onCompany()" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">From</label>
+        <div class="report-field">
+          <label>From</label>
           <p-datepicker [(ngModel)]="f.from" dateFormat="yy-mm-dd" [showIcon]="true" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">To</label>
+        <div class="report-field">
+          <label>To</label>
           <p-datepicker [(ngModel)]="f.to" dateFormat="yy-mm-dd" [showIcon]="true" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Account head</label>
+        <div class="report-field">
+          <label>Account head</label>
           <p-select [options]="heads" [(ngModel)]="f.headId" optionLabel="name" optionValue="id"
             placeholder="Head" [filter]="true" styleClass="w-16rem" />
         </div>
@@ -48,26 +49,28 @@ interface Item { id: number; name: string; }
           <p-checkbox [(ngModel)]="f.includeSubHeads" [binary]="true" inputId="sub" />
           <label for="sub" class="text-sm">Include sub-heads</label>
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Project (optional)</label>
+        <div class="report-field">
+          <label>Project (optional)</label>
           <p-select [options]="projects" [(ngModel)]="f.projectId" optionLabel="name" optionValue="id"
             placeholder="All projects" [showClear]="true" styleClass="w-14rem" />
         </div>
-        <button pButton label="Run" icon="pi pi-play" (click)="run()" [loading]="busy()"
-          [disabled]="!f.companyId || !f.headId"></button>
+        <div class="report-preview-btn">
+          <p-button  label="Preview" icon="pi pi-eye" size="large"
+            (click)="run()" [loading]="busy()" [disabled]="!f.companyId || !f.headId"></p-button>
+        </div>
       </div>
-    </p-card>
+    </div>
 
     @if (report()) {
       <p-card styleClass="mt-3" [header]="report()!.code + ' - ' + report()!.name">
         <p-table [value]="report()!.lines" styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="60vh">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr>
               <th>Date</th><th>Voucher No</th><th>Type</th><th>Narration</th>
               <th class="text-right">Debit</th><th class="text-right">Credit</th><th class="text-right">Balance</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-l>
+          <ng-template #body let-l>
             <tr>
               <td>{{ l.date }}</td><td>{{ l.voucherNo }}</td><td>{{ l.voucherType }}</td><td>{{ l.narration }}</td>
               <td class="text-right">{{ l.debit | number:'1.2-2' }}</td>
@@ -75,13 +78,13 @@ interface Item { id: number; name: string; }
               <td class="text-right font-semibold">{{ l.runningBalance | number:'1.2-2' }}</td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="footer">
+          <ng-template #footer>
             <tr>
               <td colspan="4" class="text-right font-bold">Opening: {{ report()!.openingBalance | number:'1.2-2' }}</td>
               <td colspan="3" class="text-right font-bold">Closing: {{ report()!.closingBalance | number:'1.2-2' }}</td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="emptymessage">
+          <ng-template #emptymessage>
             <tr><td colspan="7" class="text-center text-500">No transactions in this period.</td></tr>
           </ng-template>
         </p-table>
