@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+/* LiteERP "Soft Professional" global theme */
+
+:root {
+  --lite-bg: #f6f8fc;
+  --lite-sidebar: #ffffff;
+  --lite-navy: #1e1b4b;
+  --lite-navy-2: #2a2560;
+  --lite-text: #1e293b;
+  --lite-text-soft: #64748b;
+  --lite-border: #e8edf5;
+  --lite-green-bg: #ecfdf5;
+  --lite-green: #059669;
+  --lite-orange-bg: #fff7ed;
+  --lite-orange: #ea580c;
+  --lite-purple-bg: #f5f3ff;
+  --lite-purple: #7c3aed;
+  --lite-blue-bg: #eff6ff;
+  --lite-blue: #2563eb;
+}
+
+html, body {
+  margin: 0;
+  background: var(--lite-bg);
+  color: var(--lite-text);
+  font-family: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Hide PrimeUI license badge */
+.p-license-badge,
+[data-pc-name="licensebadge"],
+.license-badge {
+  display: none !important;
+}
+
+/* Soft page container */
+.lite-page {
+  padding: 1.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.lite-page-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--lite-navy);
+  margin: 0 0 1rem 0;
+}
+
+/* Summary stat cards */
+.stat-card {
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--lite-border);
+  box-shadow: 0 1px 3px rgba(30,27,75,.05);
+}
+.stat-card .stat-label {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+.stat-card .stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.stat-card .stat-sub {
+  font-size: .8rem;
+  color: var(--lite-text-soft);
+  margin-top: .2rem;
+}
+.stat-green { background: var(--lite-green-bg); border-color: #d1fae5; }
+.stat-green .stat-label, .stat-green .stat-value { color: var(--lite-green); }
+.stat-orange { background: var(--lite-orange-bg); border-color: #fed7aa; }
+.stat-orange .stat-label, .stat-orange .stat-value { color: var(--lite-orange); }
+.stat-purple { background: var(--lite-purple-bg); border-color: #ddd6fe; }
+.stat-purple .stat-label, .stat-purple .stat-value { color: var(--lite-purple); }
+.stat-blue { background: var(--lite-blue-bg); border-color: #bfdbfe; }
+.stat-blue .stat-label, .stat-blue .stat-value { color: var(--lite-blue); }
