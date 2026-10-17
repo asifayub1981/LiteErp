@@ -23,36 +23,40 @@ interface Item { id: number; name: string; }
   imports: [FormsModule, DecimalPipe, SelectModule, DatePickerModule, ButtonModule, TableModule, ToolbarModule, CardModule, SelectButtonModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start"><span class="font-bold text-lg">Trial Balance</span></ng-template>
+      <ng-template #start><span class="font-bold text-lg">Trial Balance</span></ng-template>
     </p-toolbar>
 
-    <p-card styleClass="mt-3">
-      <div class="flex flex-wrap gap-3 align-items-end">
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Company</label>
+    <div class="report-filters">
+      <div class="report-filters-title">Report Parameters</div>
+      <div class="report-filters-grid">
+        <div class="report-field">
+          <label>Company</label>
           <p-select [options]="companies" [(ngModel)]="f.companyId" optionLabel="name" optionValue="id"
-            placeholder="Company" styleClass="w-14rem" />
+            placeholder="Select company" styleClass="w-14rem" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">From</label>
+        <div class="report-field">
+          <label>From</label>
           <p-datepicker [(ngModel)]="f.from" dateFormat="yy-mm-dd" [showIcon]="true" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">To</label>
+        <div class="report-field">
+          <label>To</label>
           <p-datepicker [(ngModel)]="f.to" dateFormat="yy-mm-dd" [showIcon]="true" />
         </div>
-        <div class="flex flex-column gap-1">
-          <label class="text-sm text-500">Columns</label>
+        <div class="report-field">
+          <label>Columns</label>
           <p-selectbutton [options]="colOptions" [(ngModel)]="f.columns" optionLabel="label" optionValue="value" />
         </div>
-        <button pButton label="Run" icon="pi pi-play" (click)="run()" [loading]="busy()" [disabled]="!f.companyId"></button>
+        <div class="report-preview-btn">
+          <p-button  label="Preview" icon="pi pi-eye" size="large"
+            (click)="run()" [loading]="busy()" [disabled]="!f.companyId"></p-button>
+        </div>
       </div>
-    </p-card>
+    </div>
 
     @if (rows().length) {
       <p-card styleClass="mt-3">
         <p-table [value]="rows()" styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="60vh">
-          <ng-template pTemplate="header">
+          <ng-template #header>
             <tr>
               <th>Code</th><th>Account</th>
               @if (f.columns === 6) {
@@ -63,7 +67,7 @@ interface Item { id: number; name: string; }
               <th class="text-right">{{ f.columns === 6 ? 'Closing Cr' : 'Credit' }}</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-r>
+          <ng-template #body let-r>
             <tr [class.font-bold]="!r.isTransactional">
               <td class="font-mono text-sm">{{ r.code }}</td>
               <td [style.padding-left.rem]="0.5 + r.level * 1.5">{{ r.name }}</td>
@@ -77,7 +81,7 @@ interface Item { id: number; name: string; }
               <td class="text-right">{{ r.closingCr | number:'1.2-2' }}</td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="footer">
+          <ng-template #footer>
             <tr>
               <td colspan="2" class="text-right font-bold">Total</td>
               @if (f.columns === 6) {
