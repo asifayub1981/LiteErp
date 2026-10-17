@@ -11,10 +11,64 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/shell/shell.component').then(m => m.ShellComponent),
     children: [
-      { path: '', redirectTo: 'coa', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
       {
         path: 'coa',
         loadComponent: () => import('./features/coa/coa-tree.component').then(m => m.CoaTreeComponent)
+      },
+      {
+        path: 'vouchers',
+        loadComponent: () => import('./features/vouchers/voucher-list.component').then(m => m.VoucherListComponent)
+      },
+      {
+        path: 'vouchers/new',
+        loadComponent: () => import('./features/vouchers/voucher-entry.component').then(m => m.VoucherEntryComponent)
+      },
+      {
+        path: 'vouchers/:id',
+        loadComponent: () => import('./features/vouchers/voucher-entry.component').then(m => m.VoucherEntryComponent)
+      },
+      {
+        path: 'parties',
+        loadComponent: () => import('./features/parties/party-list.component').then(m => m.PartyListComponent)
+      },
+      {
+        path: 'invoices/sales',
+        loadComponent: () => import('./features/invoices/invoice-list.component').then(m => m.InvoiceListComponent),
+        data: { kind: 'sales' }
+      },
+      {
+        path: 'invoices/sales/new',
+        loadComponent: () => import('./features/invoices/invoice-entry.component').then(m => m.InvoiceEntryComponent),
+        data: { kind: 'sales' }
+      },
+      {
+        path: 'invoices/sales/:id',
+        loadComponent: () => import('./features/invoices/invoice-entry.component').then(m => m.InvoiceEntryComponent),
+        data: { kind: 'sales' }
+      },
+      {
+        path: 'invoices/purchase',
+        loadComponent: () => import('./features/invoices/invoice-list.component').then(m => m.InvoiceListComponent),
+        data: { kind: 'purchase' }
+      },
+      {
+        path: 'invoices/purchase/new',
+        loadComponent: () => import('./features/invoices/invoice-entry.component').then(m => m.InvoiceEntryComponent),
+        data: { kind: 'purchase' }
+      },
+      {
+        path: 'invoices/purchase/:id',
+        loadComponent: () => import('./features/invoices/invoice-entry.component').then(m => m.InvoiceEntryComponent),
+        data: { kind: 'purchase' }
+      },
+      {
+        path: 'reports/party-statement',
+        loadComponent: () => import('./features/reports/party-statement.component').then(m => m.PartyStatementComponent)
       },
       {
         path: 'reports/gl',
