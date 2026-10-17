@@ -40,8 +40,8 @@ export const VOUCHER_TYPES = [
     ButtonModule, TableModule, ToolbarModule, CardModule, InputTextModule, TagModule, TooltipModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start"><span class="font-bold text-lg">Vouchers</span></ng-template>
-      <ng-template pTemplate="end">
+      <ng-template #start><span class="font-bold text-lg">Vouchers</span></ng-template>
+      <ng-template #end>
         <p-button  label="New Voucher" icon="pi pi-plus" routerLink="/vouchers/new"></p-button>
       </ng-template>
     </p-toolbar>
@@ -84,14 +84,14 @@ export const VOUCHER_TYPES = [
     <p-card styleClass="mt-3">
       <p-table [value]="rows()" [loading]="busy()" styleClass="p-datatable-sm"
         [scrollable]="true" scrollHeight="60vh">
-        <ng-template pTemplate="header">
+        <ng-template #header>
           <tr>
             <th>Voucher No</th><th>Date</th><th>Type</th><th>Project</th><th>Narration</th>
             <th class="text-right">Debit</th><th class="text-right">Credit</th>
             <th>Status</th><th style="width:11rem">Actions</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-r>
+        <ng-template #body let-r>
           <tr>
             <td class="font-semibold">{{ r.voucherNo }}</td>
             <td>{{ r.voucherDate }}</td>
@@ -119,7 +119,7 @@ export const VOUCHER_TYPES = [
             </td>
           </tr>
         </ng-template>
-        <ng-template pTemplate="emptymessage">
+        <ng-template #emptymessage>
           <tr><td colspan="9" class="text-center text-500">No vouchers — adjust filters or create one.</td></tr>
         </ng-template>
       </p-table>
