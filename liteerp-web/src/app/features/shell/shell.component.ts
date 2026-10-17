@@ -163,6 +163,7 @@ export class ShellComponent {
         { label: 'Purchase Invoices', icon: 'pi pi-file-arrow-down', link: '/invoices/purchase' },
       ]
     },
+    { label: 'Users', icon: 'pi pi-users', link: '/users' },
     {
       label: 'Reports', icon: 'pi pi-chart-bar', children: [
         { label: 'General Ledger', icon: 'pi pi-book', link: '/reports/gl' },
