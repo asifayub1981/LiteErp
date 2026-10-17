@@ -29,10 +29,10 @@ interface InvoiceRow {
     ButtonModule, TableModule, ToolbarModule, CardModule, InputTextModule, TagModule, TooltipModule],
   template: `
     <p-toolbar>
-      <ng-template pTemplate="start">
+      <ng-template #start>
         <span class="font-bold text-lg">{{ kind === 'sales' ? 'Sales Invoices' : 'Purchase Invoices' }}</span>
       </ng-template>
-      <ng-template pTemplate="end">
+      <ng-template #end>
         <p-button label="New Invoice" icon="pi pi-plus" [routerLink]="['/invoices/' + kind + '/new']"></p-button>
       </ng-template>
     </p-toolbar>
@@ -68,12 +68,12 @@ interface InvoiceRow {
 
       <p-table [value]="rows()" [loading]="busy()" styleClass="p-datatable-sm"
         [paginator]="true" [rows]="15">
-        <ng-template pTemplate="header">
+        <ng-template #header>
           <tr><th>Invoice No</th><th>Date</th><th>{{ kind === 'sales' ? 'Customer' : 'Supplier' }}</th>
             <th class="text-right">Total</th><th class="text-right">Paid</th>
             <th class="text-right">Balance</th><th>Status</th><th>Voucher</th><th></th></tr>
         </ng-template>
-        <ng-template pTemplate="body" let-r>
+        <ng-template #body let-r>
           <tr>
             <td class="font-bold">{{ r.invoiceNo }}</td>
             <td>{{ r.invoiceDate }}</td>
@@ -101,7 +101,7 @@ interface InvoiceRow {
             </td>
           </tr>
         </ng-template>
-        <ng-template pTemplate="emptymessage">
+        <ng-template #emptymessage>
           <tr><td colspan="9" class="text-center text-500">No invoices. Click "New Invoice".</td></tr>
         </ng-template>
       </p-table>
